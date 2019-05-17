@@ -4,9 +4,9 @@ Exercises
 
 	"A Clockwork Orange" => string
 	42 => integer
-	09/02/1945 => integer
+	09/02/1945 => date
 	98.7 => float
-	$15.99 => float
+	$15.99 => money
 
 2. Explain when a database would be used. Explain when a text file would be used.
 
@@ -16,7 +16,8 @@ Exercises
 
 3. Describe one difference between SQL and other programming languages.
 
-	SQL uses = for equality whereas other programming languages uses ==.
+	SQL is a declarative rather than a procedural language. Instead of having to define an algorithm 
+	on how we should find data we tell the database what we are looking for.
 
 4. In your own words, explain how the pieces of a database system fit together at a high level.
 
@@ -65,17 +66,31 @@ Exercises
 8. Given this users table, write SQL queries using the following criteria and include the output:
 
 The email and sign-up date for the user named DeAndre Data.
+	
 	SELECT email, signup
 	FROM users
 	WHERE name = 'DeAndre Data';
+	 
+	  (     "email",           "signup")
+	  ('datad@comcast.net','2008-01-20')
+   
 The user ID for the user with email 'aleesia.algorithm@uw.edu'.
+	
 	SELECT userid
 	FROM users
 	WHERE email = 'aleesia.algorithm@uw.edu';
+	
+	  ("userid")
+	  (    1   )
+    
+
 All the columns for the user ID equal to 4.
 	SELECT *
 	FROM users
 	WHERE userid = 4;
+
+    ("userid",     "name",              "email",                      "signup")
+    ( 4,       'Brandy Boolean',    'bboolean@nasa.gov',            '1999-10-15')
      
      
      

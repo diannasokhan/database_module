@@ -1,0 +1,82 @@
+Exercises
+
+1. What data types do each of these values represent?
+
+	"A Clockwork Orange" => string
+	42 => integer
+	09/02/1945 => integer
+	98.7 => float
+	$15.99 => float
+
+2. Explain when a database would be used. Explain when a text file would be used.
+
+	Databases would be used for large files in order to easily search and change data.
+	Because database files are not readable by humans, text files would be used when the document
+	needs to be read by humans.
+
+3. Describe one difference between SQL and other programming languages.
+
+	SQL uses = for equality whereas other programming languages uses ==.
+
+4. In your own words, explain how the pieces of a database system fit together at a high level.
+
+	Databases display data in a table structure with columns defining what the data represents
+	and rows containing the data. Using SQL, you are able to write a query in order to retrieve the
+	desired data from the database.
+
+5. Explain the meaning of table, row, column, and value.
+
+	Table consists of rows and column and holds a collection of related data
+	Rows contain the conceptual unit
+	Columns define what the data represents
+	Value is some piece of information that the column name describes
+
+6. List three data types that can be used in a table.
+
+	Strings, integers, float
+
+7. Given this payments table, provide an English description of the following queries and include their results:
+
+     SELECT date, amount	
+     FROM payments;
+
+     All dates and corresponding amounts from payment
+
+  (    "date",   "amount")
+  ('2016-05-01', 1500.00 )
+  ('2016-05-10', 37.00   )
+  ('2016-05-15', 124.93  )
+  ('2016-05-23', 54.72   )
+
+     SELECT amount
+     FROM payments
+     WHERE amount > 500;
+
+     Amounts from payment larger than 500
+     ("amount")
+     (1500.00 )
+
+     SELECT *
+     FROM payments
+     WHERE payee = 'Mega Foods';
+
+     All of the columns from payment where payee is 'Mega Foods'
+
+8. Given this users table, write SQL queries using the following criteria and include the output:
+
+The email and sign-up date for the user named DeAndre Data.
+	SELECT email, signup
+	FROM users
+	WHERE name = 'DeAndre Data';
+The user ID for the user with email 'aleesia.algorithm@uw.edu'.
+	SELECT userid
+	FROM users
+	WHERE email = 'aleesia.algorithm@uw.edu';
+All the columns for the user ID equal to 4.
+	SELECT *
+	FROM users
+	WHERE userid = 4;
+     
+     
+     
+	

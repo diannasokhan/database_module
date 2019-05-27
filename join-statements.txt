@@ -1,0 +1,251 @@
+Exercises
+
+1. How do you find related data held in two separate data tables?
+
+	A: Use JOIN method.
+
+2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT  
+OUTER JOIN. Give a real-world example for each.
+
+	A: INNER JOIN will only output data when the primary key and foreign key are a match. LEFT OUTER
+	JOIN will output all of the data for the first table and null values will be the output for the second tables output,
+	if there is no key match. RIGHT OUTER JOIN is the opposite of LEFT OUTER JOIN. All of the data for the second table will be outputted and 
+	if there is no matching data in the first table matching it, null values will be outputted. Given the following table: 
+	
+	table1
+	
+	id | car_make | color | year | car_type_id
+	1    honda	blue	2017	0010
+	2    toyota	yellow	2019	0010	
+	3    acura	black	2010	0028	
+	4    bmw	red	2011	0014
+	5    mazda	white   2020	0020
+	6    jeep	green	2011	0090		
+
+	table2
+
+	id  | body_style
+	0010  sedan
+	0028  suv
+	0014  coupe
+	0018  hatchback
+	0020  crossover
+	0015  convertible
+
+	An example of INNER JOIN will only give the results where table1 car_type_id = table2 id.
+		SELECT car_make, body_style FROM table1 JOIN table2 ON table1.car_type_id = table2.id;
+		car_make | body_style
+		honda	   sedan
+ 		toyota	   sedan
+		acura	   suv
+		bmw	   coupe
+		mazda	   crossover
+
+	An example of LEFT OUTER JOIN is like an INNER JOIN but it will also include the data from the first table even if it doesn't have a 
+	matching key. It preserves the unmatched rows by having null values added to the columns for the second table.
+
+		SELECT car_make, body_style FROM table1 LEFT OUTER JOIN table2 ON table1.car_type_id = table2.id;
+		car_make | body_style
+		honda	   sedan
+ 		toyota	   sedan
+		acura	   suv
+		bmw	   coupe
+		mazda	   crossover
+		jeep	   null
+
+	RIGHT OUTER JOIN is the same as LEFT OUTER JOIN, except the second table will be listed and if there isn't a matching key in table1, null values will be added
+	to the column.
+	
+		SELECT car_make, body_style FROM table1 RIGHT OUTER JOIN table2 ON table1.car_type_id = table2.id;
+		car_make | body_style
+		honda	   sedan
+		toyota     sedan
+		acura	   suv
+		bmw	   coupe
+		null	   hatchback
+	  	mazda	   crossover
+	  	null	   convertible
+
+3. Define primary key and foreign key.
+	
+	Primary key is a unique identifier for each row in a database table while, a foreign key is a primary key in another table
+	but just an attribute in another table.
+	In the above example table1.car_type_id would be the foreign key while table2.id is the primary key.
+
+4. Define aliasing.
+
+	Aliasing shortens variable names by replacing the table name in a query, usually with a single letter.
+
+5. Change this query so that you are using aliasing:
+	
+	SELECT professor.name, compensation.salary,
+	compensation.vacation_days FROM professor JOIN
+	compensation ON professor.id =
+	compensation.professor_id;
+	
+	SELECT p.name, c.salary, c.vacation_days
+	FROM professor AS p
+	JOIN compensation AS c
+	ON p.id = c.professor_id;
+
+6. Why would you use a NATURAL JOIN? Give a real-world example.
+	NATURAL JOIN would be used to join tables based on shared columns. 
+
+	table1
+	
+	id | car_make | color | year | car_type_id
+	1    honda	blue	2017	0010
+	2    toyota	yellow	2019	0010	
+	3    acura	black	2010	0028	
+	4    bmw	red	2011	0014
+	5    mazda	white   2020	0020
+	6    jeep	green	2011	0090		
+
+	table2
+
+	car_type_id  | body_style
+	0010  sedan
+	0028  suv
+	0014  coupe
+	0018  hatchback
+	0020  crossover
+	0015  convertible
+
+	We would be able to use natural join on the above tables because they have a common column, car_type_id, which would result in.
+	
+	SELECT * FROM table1 NATURAL JOIN table2;
+
+	id | car_make | color | year | car_type_id | body_style
+	1    honda	blue	2017	0010		sedan
+	2    toyota	yellow	2019	0010		sedan
+	3    acura	black	2010	0028		suv
+	4    bmw	red	2011	0014		coupe
+	5    mazda	white   2020	0020		crossover
+	
+7. Using this Employee schema and data, write queries to find the following information:
+List all employees and all shifts.
+
+	SELECT * 
+	FROM employees AS e
+	LEFT OUTER JOIN scheduled_shifts AS ss
+	ON e.id = ss.employee_id
+	RIGHT OUTER JOIN shifts AS s
+	ON ss.shift_id = s.id;
+ 8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
+
+	Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
+
+		SELECT v.first_name, v.last_name, d.name
+		FROM volunteers AS v
+		LEFT OUTER JOIN dogs AS d
+		ON v.foster_dog_id = d.id;
+
+		first_name	last_name	name
+		Albus		Dumbledore	null
+		Rubeus		Hagrid		Munchkin
+		Remus		Lupin		null
+		Sirius		Black		null
+		Marjorie	Dursley		Marmaduke
+	The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the 
+	"Happy Tail" social media promotion which posts recent successful adoptions.
+		
+		SELECT c.name, a.first_name, a.last_name,
+		c_a.date
+		FROM cats AS c
+		JOIN cat_adoptions AS c_a
+		ON c.id = c_a.cat_id 
+		AND c_a.date >= CURRENT_DATE - INTERVAL '30 DAYS'
+		JOIN adopters AS a
+		ON a.id = c_a.adopter_id;
+
+		name	 first_name	last_name	date
+		Mushi	 Arabella	Figg		2019-05-07T00:00:00.000Z
+		Victoire Argus		Filch		2019-05-12T00:00:00.000Z
+
+	Create a list of adopters who have not yet chosen a dog to adopt.
+
+		SELECT a.first_name, a.last_name
+		FROM adopters AS a
+		JOIN dog_adoptions AS d_a
+		ON d_a.adopter_id <> a.id;
+
+		first_name	last_name
+		Hermione	Granger
+		Arabella	Figg
+
+
+	Lists of all cats and all dogs who have not been adopted.
+
+		Dogs that havent been adopted
+		SELECT dogs.name
+		FROM dogs
+		JOIN dog_adoptions
+		ON dogs.id <> dog_adoptions.dog_id;
+
+		name
+		Boujee
+		Munchkin
+		Marley
+		Lassie
+		Marmaduke
+
+		Cats that haven't been adopted
+
+		SELECT c.name
+		FROM cats AS c
+		FULL OUTER JOIN cat_adoptions AS c_a
+		ON c_a.cat_id = c.id
+		WHERE c_a.cat_id IS null
+		OR c.id IS null
+
+		name
+		Seashell
+		Nala
+
+
+	The name of the person who adopted Rosco.
+		SELECT a.first_name, a.last_name
+		FROM dogs AS d
+		JOIN dog_adoptions AS d_a
+		ON d.id = d_a.dog_id
+		JOIN adopters AS a
+		ON  a.id = d_a.adopter_id
+		WHERE d.name = 'Rosco'
+
+		first_name	last_name
+		Argus		Filch
+
+9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+	To determine if the library should buy more copies of a given book, please provide the names and position, in order, 
+	of all of the patrons with a hold (request for a book with all copies checked out) on "Advanced Potion-Making".
+
+		SELECT * 
+		FROM holds
+		JOIN books
+		ON holds.isbn = books.isbn
+		JOIN patrons
+		ON patrons.id = holds.patron_id
+		WHERE books.title = 'Advanced Potion-Making'
+		ORDER BY holds.rank ASC
+
+	List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+		SELECT p.name, b.title
+		FROM patrons AS p
+		LEFT OUTER JOIN transactions AS t
+		ON p.id = t.patron_id
+		JOIN books AS b
+		ON b.isbn = t.isbn
+		ORDER BY p.id
+
+		name			title
+		Hermione Granger	Fantastic Beasts and Where to Find Them
+		Hermione Granger	Hogwarts: A History
+		Terry Boot		Advanced Potion-Making
+		Terry Boot		Fantastic Beasts and Where to Find Them
+		Padma Patil		Fantastic Beasts and Where to Find Them
+		Cho Chang		Advanced Potion-Making
+		Cedric Diggory		Fantastic Beasts and Where to Find Them
+
+

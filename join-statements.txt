@@ -84,8 +84,8 @@ OUTER JOIN. Give a real-world example for each.
 	compensation.professor_id;
 	
 	SELECT p.name, c.salary, c.vacation_days
-	FROM professor AS p
-	JOIN compensation AS c
+	FROM professor p
+	JOIN compensation c
 	ON p.id = c.professor_id;
 
 6. Why would you use a NATURAL JOIN? Give a real-world example.
@@ -125,19 +125,19 @@ OUTER JOIN. Give a real-world example for each.
 7. Using this Employee schema and data, write queries to find the following information:
 List all employees and all shifts.
 
-	SELECT * 
-	FROM employees AS e
-	LEFT OUTER JOIN scheduled_shifts AS ss
-	ON e.id = ss.employee_id
-	RIGHT OUTER JOIN shifts AS s
-	ON ss.shift_id = s.id;
+		SELECT * 
+		FROM employees e
+		JOIN scheduled_shifts ss
+		ON e.id = ss.employee_id
+		JOIN shifts s
+		ON ss.shift_id = s.id;
  8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
 
 	Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
 
 		SELECT v.first_name, v.last_name, d.name
-		FROM volunteers AS v
-		LEFT OUTER JOIN dogs AS d
+		FROM volunteers v
+		LEFT OUTER JOIN dogs d
 		ON v.foster_dog_id = d.id;
 
 		first_name	last_name	name
@@ -151,11 +151,11 @@ List all employees and all shifts.
 		
 		SELECT c.name, a.first_name, a.last_name,
 		c_a.date
-		FROM cats AS c
-		JOIN cat_adoptions AS c_a
+		FROM cats c
+		JOIN cat_adoptions c_a
 		ON c.id = c_a.cat_id 
 		AND c_a.date >= CURRENT_DATE - INTERVAL '30 DAYS'
-		JOIN adopters AS a
+		JOIN adopters a
 		ON a.id = c_a.adopter_id;
 
 		name	 first_name	last_name	date
@@ -165,8 +165,8 @@ List all employees and all shifts.
 	Create a list of adopters who have not yet chosen a dog to adopt.
 
 		SELECT a.first_name, a.last_name
-		FROM adopters AS a
-		JOIN dog_adoptions AS d_a
+		FROM adopters a
+		JOIN dog_adoptions d_a
 		ON d_a.adopter_id <> a.id;
 
 		first_name	last_name
@@ -192,8 +192,8 @@ List all employees and all shifts.
 		Cats that haven't been adopted
 
 		SELECT c.name
-		FROM cats AS c
-		FULL OUTER JOIN cat_adoptions AS c_a
+		FROM cats c
+		FULL OUTER JOIN cat_adoptions c_a
 		ON c_a.cat_id = c.id
 		WHERE c_a.cat_id IS null
 		OR c.id IS null
@@ -205,10 +205,10 @@ List all employees and all shifts.
 
 	The name of the person who adopted Rosco.
 		SELECT a.first_name, a.last_name
-		FROM dogs AS d
-		JOIN dog_adoptions AS d_a
+		FROM dogs d
+		JOIN dog_adoptions d_a
 		ON d.id = d_a.dog_id
-		JOIN adopters AS a
+		JOIN adopters a
 		ON  a.id = d_a.adopter_id
 		WHERE d.name = 'Rosco'
 
@@ -232,10 +232,10 @@ List all employees and all shifts.
 	List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
 
 		SELECT p.name, b.title
-		FROM patrons AS p
-		LEFT OUTER JOIN transactions AS t
+		FROM patrons p
+		LEFT OUTER JOIN transactions t
 		ON p.id = t.patron_id
-		JOIN books AS b
+		JOIN books b
 		ON b.isbn = t.isbn
 		ORDER BY p.id
 
